@@ -80,6 +80,7 @@ class Server:
     def context_processor(self):
         variables: dict = {
             "url_for": self.url_for,
+            "bodyClass": "mc5000" if self.mc5000_mode else "mc3000"
         }
         variables.update(self.variables)
         return variables

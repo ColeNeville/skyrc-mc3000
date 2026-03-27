@@ -85,6 +85,10 @@ body {
     color: #ddd;
 }
 
+.mc5000 .status-table [data-temperature] {
+    display: none;
+}
+
 /*--------------------- scan ---------------------*/
 
 .scan-wrapper {
