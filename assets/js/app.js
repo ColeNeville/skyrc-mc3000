@@ -76,16 +76,23 @@ App.prototype.update = function (data) {
         payload = payload.battery_info;
         var table = $('.status-table');
         var nth = payload.slot + 2;
+        var referenceCell = table.find('[data-led] td:nth-child(' + nth + ')');
+        var firstUpdate = !referenceCell.attr('data-initialized');
+        if (firstUpdate) {
+            referenceCell.attr('data-initialized', 'yes');
+        }
         table.find('[data-led] td:nth-child(' + nth + ') .led').attr('class', 'led ' + payload.led);
         table.find('[data-type] td:nth-child(' + nth + ')').text(payload.type);
         table.find('[data-mode] td:nth-child(' + nth + ')').text(payload.mode);
         table.find('[data-status] td:nth-child(' + nth + ')').text(payload.status);
         table.find('[data-voltage] td:nth-child(' + nth + ')').text(payload.voltage + ' V');
         table.find('[data-current] td:nth-child(' + nth + ')').text(payload.current + ' A');
-        table.find('[data-capacity] td:nth-child(' + nth + ')').text(payload.capacity + ' mAh');
-        table.find('[data-time] td:nth-child(' + nth + ')').text(payload.time);
-        table.find('[data-temperature] td:nth-child(' + nth + ')').text(payload.temperature + ' °C');
-        table.find('[data-resistance] td:nth-child(' + nth + ')').text(payload.resistance + ' mΩ');
+        if (payload.status.toLowerCase() !== 'standby' || firstUpdate) {
+            table.find('[data-capacity] td:nth-child(' + nth + ')').text(payload.capacity + ' mAh');
+            table.find('[data-time] td:nth-child(' + nth + ')').text(payload.time);
+            table.find('[data-temperature] td:nth-child(' + nth + ')').text(payload.temperature + ' °C');
+            table.find('[data-resistance] td:nth-child(' + nth + ')').text(payload.resistance + ' mΩ');
+        }
         table.find('tr').each(function () {
             var row = $(this);
             row.find('td:nth-child(' + nth + ')').attr('class', payload.status.toLowerCase());
